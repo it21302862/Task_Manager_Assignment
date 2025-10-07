@@ -7,41 +7,78 @@ const TodoList = () => {
     const [taskList, setTaskList] = useState([])
     
     useEffect(() => {
-        let arr = localStorage.getItem("taskList")
-       
-        if(arr){
-            let obj = JSON.parse(arr)
-            setTaskList(obj)
-        }
+        const loadRecentTasks = async () => {
+            try {
+                const response = await fetch('http://localhost:9090/api/tasks/recent');
+                if (!response.ok) {
+                    throw new Error('Failed to load tasks');
+                }
+                const tasks = await response.json();
+                // Expecting tasks with fields: id, title, description, completed
+                const activeTasks = tasks.filter(t => !t.completed).slice(0, 5);
+                setTaskList(activeTasks);
+            } catch (error) {
+                console.error('Error fetching recent tasks', error);
+                setTaskList([]);
+            }
+        };
+        loadRecentTasks();
     }, [])
 
 
-    const deleteTask = (index) => {
-        let tempList = taskList
-        tempList.splice(index, 1)
-        localStorage.setItem("taskList", JSON.stringify(tempList))
-        setTaskList(tempList)
-        window.location.reload()
+    const deleteTask = async (taskId) => {
+        try {
+            const response = await fetch(`http://localhost:9090/api/tasks/${taskId}`, { method: 'DELETE' });
+            if (!response.ok) {
+                throw new Error('Failed to delete task');
+            }
+            setTaskList(prev => prev.filter(t => t.id !== taskId));
+        } catch (error) {
+            console.error('Error deleting task', error);
+        }
     }
 
-    const updateListArray = (obj, index) => {
-        let tempList = taskList
-        tempList[index] = obj
-        localStorage.setItem("taskList", JSON.stringify(tempList))
-        setTaskList(tempList)
-        window.location.reload()
+    const updateListArray = (updatedTask) => {
+        setTaskList(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
     }
 
     const toggle = () => {
         setModal(!modal);
     }
 
-    const saveTask = (taskObj) => {
-        let tempList = taskList
-        tempList.push(taskObj)
-        localStorage.setItem("taskList", JSON.stringify(tempList))
-        setTaskList(taskList)
-        setModal(false)
+    const saveTask = async (taskObj) => {
+        try {
+            const response = await fetch('http://localhost:9090/api/tasks', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: taskObj.title, description: taskObj.description })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to create task');
+            }
+            const created = await response.json();
+            if (!created.completed) {
+                setTaskList(prev => [created, ...prev].slice(0, 5));
+            }
+            setModal(false)
+        } catch (error) {
+            console.error('Error creating task', error);
+        }
+    }
+
+    const completeTask = async (taskId) => {
+        try {
+            const response = await fetch(`http://localhost:9090/api/tasks/${taskId}/complete`, {
+                method: 'PUT'
+            });
+            if (!response.ok) {
+                throw new Error('Failed to complete task');
+            }
+            // Hide completed from UI
+            setTaskList(prev => prev.filter(t => t.id !== taskId));
+        } catch (error) {
+            console.error('Error completing task', error);
+        }
     }
 
 
@@ -52,7 +89,16 @@ const TodoList = () => {
                 <button className = "btn btn-primary mt-2" onClick = {() => setModal(true)} >Create Task</button>
             </div>
             <div className = "task-container">
-            {taskList && taskList.map((obj , index) => <Card taskObj = {obj} index = {index} deleteTask = {deleteTask} updateListArray = {updateListArray}/> )}
+            {taskList && taskList.map((obj , index) => (
+                <Card 
+                    key={obj.id}
+                    taskObj={obj} 
+                    index={index} 
+                    deleteTask={() => deleteTask(obj.id)} 
+                    completeTask={() => completeTask(obj.id)} 
+                    updateListArray={updateListArray}
+                />
+            ))}
             </div>
             <CreateTask toggle = {toggle} modal = {modal} save = {saveTask}/>
         </>

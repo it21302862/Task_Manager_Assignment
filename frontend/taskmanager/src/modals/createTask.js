@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 const CreateTaskPopup = ({ modal, toggle,save}) => {
-  const [taskName, setTaskName] = useState("");
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    if (modal) {
+      // Reset fields each time the modal is opened for a clean form
+      setTitle("");
+      setDescription("");
+    }
+  }, [modal]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "taskName") {
-      setTaskName(value);
+    if (name === "title") {
+      setTitle(value);
     } else {
       setDescription(value);
     }
@@ -17,10 +25,7 @@ const CreateTaskPopup = ({ modal, toggle,save}) => {
 
   const handleSave = (e) => {
     e.preventDefault();
-    let taskObj = {};
-    taskObj["Name"] = taskName;
-    taskObj["Description"] = description;
-    save(taskObj);
+    save({ title, description });
   };
 
   return (
@@ -32,18 +37,18 @@ const CreateTaskPopup = ({ modal, toggle,save}) => {
             <label>Task Name</label>
             <input
               type="text"
-              className="form-control"
+              className="form-control pretty-input"
               placeholder="Title"
-              value={taskName}
+              value={title}
               onChange={handleChange}
-              name="taskName"
+              name="title"
             />
           </div>
           <div className="form-group mt-3">
             <label>Description</label>
             <textarea
               rows="5"
-              className="form-control"
+              className="form-control pretty-input"
               placeholder="Description"
               value={description}
               onChange={handleChange}

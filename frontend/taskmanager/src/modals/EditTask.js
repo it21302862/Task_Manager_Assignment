@@ -2,15 +2,15 @@ import React, { useState , useEffect} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 const EditTaskPopup = ({modal, toggle, updateTask, taskObj}) => {
-    const [taskName, setTaskName] = useState('');
+    const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
     const handleChange = (e) => {
         
         const {name, value} = e.target
 
-        if(name === "taskName"){
-            setTaskName(value)
+        if(name === "title"){
+            setTitle(value)
         }else{
             setDescription(value)
         }
@@ -19,16 +19,20 @@ const EditTaskPopup = ({modal, toggle, updateTask, taskObj}) => {
     }
 
     useEffect(() => {
-        setTaskName(taskObj.Name)
-        setDescription(taskObj.Description)
-    },[])
+        if (modal) {
+            setTitle(taskObj.title)
+            setDescription(taskObj.description)
+        }
+    },[modal, taskObj])
 
     const handleUpdate = (e) => {
         e.preventDefault();
         let tempObj = {}
-        tempObj['Name'] = taskName
-        tempObj['Description'] = description
+        tempObj['id'] = taskObj.id
+        tempObj['title'] = title
+        tempObj['description'] = description
         updateTask(tempObj)
+        toggle()
     }
 
     return (
@@ -38,11 +42,11 @@ const EditTaskPopup = ({modal, toggle, updateTask, taskObj}) => {
             
                     <div className = "form-group">
                         <label>Task Name</label>
-                        <input type="text" className = "form-control" value = {taskName} onChange = {handleChange} name = "taskName"/>
+                        <input type="text" className = "form-control pretty-input" value = {title} onChange = {handleChange} name = "title"/>
                     </div>
                     <div className = "form-group">
                         <label>Description</label>
-                        <textarea rows = "5" className = "form-control" value = {description} onChange = {handleChange} name = "description"></textarea>
+                        <textarea rows = "5" className = "form-control pretty-input" value = {description} onChange = {handleChange} name = "description"></textarea>
                     </div>
                 
             </ModalBody>
