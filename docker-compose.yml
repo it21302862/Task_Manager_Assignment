@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:8
+    container_name: taskmanager-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: taskManager
+    ports:
+      - "3307:3306"
+
+  backend:
+    build: ./backend/taskmanager
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/taskManager?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
