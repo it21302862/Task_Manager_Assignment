@@ -5,7 +5,18 @@ import Card from './Card';
 const TodoList = () => {
     const [modal, setModal] = useState(false);
     const [taskList, setTaskList] = useState([])
+    const [theme, setTheme] = useState('light')
     
+    useEffect(() => {
+        const saved = localStorage.getItem('theme') || 'light';
+        setTheme(saved);
+        if (saved === 'dark') {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+    }, [])
+
     useEffect(() => {
         const loadRecentTasks = async () => {
             try {
@@ -25,6 +36,16 @@ const TodoList = () => {
         loadRecentTasks();
     }, [])
 
+    const toggleTheme = () => {
+        const next = theme === 'dark' ? 'light' : 'dark';
+        setTheme(next);
+        localStorage.setItem('theme', next);
+        if (next === 'dark') {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+    }
 
     const deleteTask = async (taskId) => {
         try {
@@ -84,9 +105,14 @@ const TodoList = () => {
 
     return (
         <>
+            <button className="theme-toggle-icon" onClick={toggleTheme} aria-label="Toggle theme">
+                <i className={theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon'}></i>
+            </button>
             <div className = "header text-center">
                 <h3>Todo List</h3>
-                <button className = "btn btn-primary mt-2" onClick = {() => setModal(true)} >Create Task</button>
+                <div>
+                    <button className = "btn btn-primary mt-2" onClick = {() => setModal(true)} >Create Task</button>
+                </div>
             </div>
             <div className = "task-container">
             {taskList && taskList.map((obj , index) => (
