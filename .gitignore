@@ -2,3 +2,5 @@
 /node_modules
 /build
 frontend/taskmanager/package-lock.json
+frontend/taskmanager/.env
+frontend/taskmanager/.env.docker

@@ -11,6 +11,7 @@ services:
 
   backend:
     build: ./backend/taskmanager
+    container_name: taskmanager-backend
     ports:
       - "9090:9090"
     depends_on:
@@ -19,3 +20,18 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/taskManager?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
+
+  frontend:
+    build: ./frontend/taskmanager
+    container_name: taskmanager-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_BASE_URL=http://localhost:9090
+    command: npm start
+
+
+
