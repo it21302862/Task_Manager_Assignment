@@ -56,6 +56,13 @@ The Task Manager Application is a full-stack web application that allows users t
 4. The backend will run at:
      http://localhost:9090
 
+---
+#### Backend Architecture
+
+**System Diagram**
+![Architecture Diagram](https://github.com/it21302862/Task_Manager_Assignment/blob/main/frontend/taskmanager/public/architecture.png)
+---
+
 ### Frontend
 1. Navigate to the frontend folder
 
