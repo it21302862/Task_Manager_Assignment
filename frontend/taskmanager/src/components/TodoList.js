@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CreateTask from '../modals/createTask';
 import Card from './Card';
+import toast, { Toaster } from 'react-hot-toast';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -54,8 +55,23 @@ const TodoList = () => {
             const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, { method: 'DELETE' });
             if (!response.ok) throw new Error('Failed to delete task');
             setTaskList(prev => prev.filter(t => t.id !== taskId));
+            toast.success('Task has been deleted successfully', {
+                icon: '❌',
+                style: {
+                    background: '#000',
+                    color: '#fff',
+                    border: '2px solid #dc3545',
+                },
+            });
         } catch (error) {
             console.error('Error deleting task:', error);
+            toast.error('Failed to delete task', {
+                style: {
+                    background: '#000',
+                    color: '#fff',
+                    border: '2px solid #dc3545',
+                },
+            });
         }
     };
 
@@ -72,8 +88,23 @@ const TodoList = () => {
             if (!response.ok) throw new Error('Failed to update task');
             const updatedTaskFromAPI = await response.json();
             setTaskList(prev => prev.map(t => t.id === updatedTask.id ? updatedTaskFromAPI : t));
+            toast.success('Task has been updated successfully', {
+                icon: '✅',
+                style: {
+                    background: '#000',
+                    color: '#fff',
+                    border: '2px solid #28a745',
+                },
+            });
         } catch (error) {
             console.error('Error updating task:', error);
+            toast.error('Failed to update task', {
+                style: {
+                    background: '#000',
+                    color: '#fff',
+                    border: '2px solid #dc3545',
+                },
+            });
         }
     };
 
@@ -92,8 +123,23 @@ const TodoList = () => {
                 setTaskList(prev => [created, ...prev].slice(0, 5));
             }
             setModal(false);
+            toast.success('Task has been created successfully', {
+                icon: '✅',
+                style: {
+                    background: '#000',
+                    color: '#fff',
+                    border: '2px solid #28a745',
+                },
+            });
         } catch (error) {
             console.error('Error creating task:', error);
+            toast.error('Failed to create task', {
+                style: {
+                    background: '#000',
+                    color: '#fff',
+                    border: '2px solid #dc3545',
+                },
+            });
         }
     };
 
@@ -134,6 +180,16 @@ const TodoList = () => {
             </div>
 
             <CreateTask toggle={toggle} modal={modal} save={saveTask} />
+            <Toaster
+                position="bottom-center"
+                toastOptions={{
+                    duration: 3000,
+                    style: {
+                        background: '#000',
+                        color: '#fff',
+                    },
+                }}
+            />
         </>
     );
 };
