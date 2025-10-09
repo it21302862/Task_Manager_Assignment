@@ -260,3 +260,186 @@ body.dark-theme .modal-body, body.dark-theme .modal-footer{
 }
 body.dark-theme .modal-content .form-group label{ color: var(--text); }
 body.dark-theme .form-control::placeholder, body.dark-theme textarea::placeholder{ color: #94a3b8; }
+
+/* Custom styles for react-confirm-alert */
+.react-confirm-alert-overlay {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px);
+  padding: 16px !important;
+}
+
+.react-confirm-alert-body {
+  background: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-radius: 12px !important;
+  padding: 24px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  max-width: 400px !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+}
+
+/* Responsive dialog styles */
+@media (max-width: 768px) {
+  .react-confirm-alert-overlay {
+    padding: 12px !important;
+  }
+  
+  .react-confirm-alert-body {
+    max-width: calc(100vw - 24px) !important;
+    padding: 20px !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .react-confirm-alert-body {
+    padding: 16px !important;
+    border-radius: 8px !important;
+  }
+}
+
+.react-confirm-alert-body h1 {
+  color: var(--text) !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  margin-bottom: 12px !important;
+}
+
+.react-confirm-alert-body p {
+  color: var(--muted) !important;
+  font-size: 16px !important;
+  margin-bottom: 24px !important;
+  line-height: 1.5 !important;
+}
+
+/* Responsive text styles */
+@media (max-width: 768px) {
+  .react-confirm-alert-body h1 {
+    font-size: 18px !important;
+  }
+  
+  .react-confirm-alert-body p {
+    font-size: 15px !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .react-confirm-alert-body h1 {
+    font-size: 16px !important;
+  }
+  
+  .react-confirm-alert-body p {
+    font-size: 14px !important;
+    margin-bottom: 18px !important;
+  }
+}
+
+.react-confirm-alert-button-group {
+  display: flex !important;
+  gap: 12px !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+}
+
+.react-confirm-alert-button-group button {
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+  min-width: 80px !important;
+  flex: 1 !important;
+  max-width: 120px !important;
+}
+
+/* Responsive button styles */
+@media (max-width: 768px) {
+  .react-confirm-alert-button-group {
+    gap: 10px !important;
+  }
+  
+  .react-confirm-alert-button-group button {
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    min-width: 90px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .react-confirm-alert-button-group {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  
+  .react-confirm-alert-button-group button {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 14px 16px !important;
+    font-size: 15px !important;
+  }
+}
+
+.react-confirm-alert-button-group .btn-secondary {
+  background-color: #6c757d !important;
+  color: white !important;
+}
+
+.react-confirm-alert-button-group .btn-secondary:hover {
+  background-color: #5a6268 !important;
+  transform: translateY(-1px) !important;
+}
+
+.react-confirm-alert-button-group .btn-danger {
+  background-color: #dc3545 !important;
+  color: white !important;
+  border: 2px solid #dc3545 !important;
+}
+
+.react-confirm-alert-button-group .btn-danger:hover {
+  background-color: #c82333 !important;
+  border-color: #c82333 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3) !important;
+}
+
+/* Responsive styles for react-hot-toast */
+.go3958317564 {
+  max-width: calc(100vw - 32px) !important;
+  width: auto !important;
+  word-wrap: break-word !important;
+}
+
+/* Mobile toast positioning */
+@media (max-width: 768px) {
+  .go3958317564 {
+    max-width: calc(100vw - 24px) !important;
+    margin: 0 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .go3958317564 {
+    max-width: calc(100vw - 16px) !important;
+    margin: 0 8px !important;
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+  }
+}
+
+/* Toast container responsive adjustments */
+.go3958317564 > div {
+  max-width: 100% !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Ensure toast text doesn't overflow on small screens */
+.go3958317564 span {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}

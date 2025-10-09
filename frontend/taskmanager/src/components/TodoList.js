@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import CreateTask from '../modals/createTask';
 import Card from './Card';
 import toast, { Toaster } from 'react-hot-toast';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -51,28 +53,50 @@ const TodoList = () => {
     };
 
     const deleteTask = async (taskId) => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, { method: 'DELETE' });
-            if (!response.ok) throw new Error('Failed to delete task');
-            setTaskList(prev => prev.filter(t => t.id !== taskId));
-            toast.success('Task has been deleted successfully', {
-                icon: '❌',
-                style: {
-                    background: '#000',
-                    color: '#fff',
-                    border: '2px solid #dc3545',
+        confirmAlert({
+            title: 'Confirm Delete',
+            message: 'Are you sure you want to delete this task?',
+            buttons: [
+                {
+                    label: 'Cancel',
+                    className: 'btn-secondary',
+                    onClick: () => {
+                        // Do nothing, just close the dialog
+                    }
                 },
-            });
-        } catch (error) {
-            console.error('Error deleting task:', error);
-            toast.error('Failed to delete task', {
-                style: {
-                    background: '#000',
-                    color: '#fff',
-                    border: '2px solid #dc3545',
-                },
-            });
-        }
+                {
+                    label: 'Delete',
+                    className: 'btn-danger',
+                    onClick: async () => {
+                        try {
+                            const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, { method: 'DELETE' });
+                            if (!response.ok) throw new Error('Failed to delete task');
+                            setTaskList(prev => prev.filter(t => t.id !== taskId));
+                            toast.success('Task has been deleted successfully', {
+                                icon: '❌',
+                                style: {
+                                    background: '#000',
+                                    color: '#fff',
+                                    border: '2px solid #dc3545',
+                                },
+                            });
+                        } catch (error) {
+                            console.error('Error deleting task:', error);
+                            toast.error('Failed to delete task', {
+                                style: {
+                                    background: '#000',
+                                    color: '#fff',
+                                    border: '2px solid #dc3545',
+                                },
+                            });
+                        }
+                    }
+                }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: true,
+            overlayClassName: 'react-confirm-alert-overlay'
+        });
     };
 
     const updateListArray = async (updatedTask) => {
@@ -148,8 +172,23 @@ const TodoList = () => {
             const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/complete`, { method: 'PUT' });
             if (!response.ok) throw new Error('Failed to complete task');
             setTaskList(prev => prev.filter(t => t.id !== taskId));
+            toast.success('Task completed successfully', {
+                icon: '🎉',
+                style: {
+                    background: '#000',
+                    color: '#fff',
+                    border: '2px solid #28a745',
+                },
+            });
         } catch (error) {
             console.error('Error completing task:', error);
+            toast.error('Failed to complete task', {
+                style: {
+                    background: '#000',
+                    color: '#fff',
+                    border: '2px solid #dc3545',
+                },
+            });
         }
     };
 
@@ -187,7 +226,15 @@ const TodoList = () => {
                     style: {
                         background: '#000',
                         color: '#fff',
+                        maxWidth: '90vw',
+                        wordBreak: 'break-word',
                     },
+                }}
+                containerStyle={{
+                    top: 'auto',
+                    bottom: '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
                 }}
             />
         </>
