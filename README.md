@@ -64,6 +64,11 @@ REACT_APP_API_BASE_URL=http://localhost:9090
 
 ```
 npm run start
-``
+```
 5. The frontend will run at
 http://localhost:3000
+
+6. To run test cases
+```
+npm test -- --watchAll=false
+```
