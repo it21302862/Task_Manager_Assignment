@@ -31,8 +31,8 @@ const Card = ({taskObj, index, deleteTask, completeTask, updateListArray}) => {
         setModal(!modal);
     }
 
-    const updateTask = (obj) => {
-        updateListArray(obj)
+    const updateTask = async (obj) => {
+        await updateListArray(obj)
     }
 
     const handleDelete = () => {

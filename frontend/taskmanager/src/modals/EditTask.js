@@ -25,13 +25,13 @@ const EditTaskPopup = ({modal, toggle, updateTask, taskObj}) => {
         }
     },[modal, taskObj])
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         let tempObj = {}
         tempObj['id'] = taskObj.id
         tempObj['title'] = title
         tempObj['description'] = description
-        updateTask(tempObj)
+        await updateTask(tempObj)
         toggle()
     }
 

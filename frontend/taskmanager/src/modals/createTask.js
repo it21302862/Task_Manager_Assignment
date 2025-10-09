@@ -7,7 +7,6 @@ const CreateTaskPopup = ({ modal, toggle,save}) => {
 
   useEffect(() => {
     if (modal) {
-      // Reset fields each time the modal is opened for a clean form
       setTitle("");
       setDescription("");
     }

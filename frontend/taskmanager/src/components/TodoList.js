@@ -59,8 +59,22 @@ const TodoList = () => {
         }
     };
 
-    const updateListArray = (updatedTask) => {
-        setTaskList(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
+    const updateListArray = async (updatedTask) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/tasks/${updatedTask.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    title: updatedTask.title, 
+                    description: updatedTask.description 
+                })
+            });
+            if (!response.ok) throw new Error('Failed to update task');
+            const updatedTaskFromAPI = await response.json();
+            setTaskList(prev => prev.map(t => t.id === updatedTask.id ? updatedTaskFromAPI : t));
+        } catch (error) {
+            console.error('Error updating task:', error);
+        }
     };
 
     const toggle = () => setModal(!modal);
