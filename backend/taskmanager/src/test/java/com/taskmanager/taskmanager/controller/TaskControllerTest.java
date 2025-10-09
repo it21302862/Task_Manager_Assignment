@@ -90,6 +90,30 @@ public class TaskControllerTest {
     }
 
     @Test
+    void testUpdateTask() {
+        Long taskId = 1L;
+
+        TaskRequestDTO updateRequest = new TaskRequestDTO();
+        updateRequest.setTitle("Updated Task Title");
+        updateRequest.setDescription("Updated Task Description");
+
+        TaskResponseDTO updatedResponse = new TaskResponseDTO();
+        updatedResponse.setId(taskId);
+        updatedResponse.setTitle("Updated Task Title");
+        updatedResponse.setDescription("Updated Task Description");
+        updatedResponse.setCompleted(false);
+
+        when(taskService.updateTask(taskId, updateRequest)).thenReturn(updatedResponse);
+
+        ResponseEntity<TaskResponseDTO> result = taskController.updateTask(taskId, updateRequest);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(updatedResponse, result.getBody());
+        verify(taskService, times(1)).updateTask(taskId, updateRequest);
+    }
+
+
+    @Test
     void testDeleteTask() {
         Long taskId = 1L;
 

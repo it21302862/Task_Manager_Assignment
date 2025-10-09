@@ -80,6 +80,29 @@ public class TaskControllerIntegrationTest {
     }
 
     @Test
+    void testUpdateTask() throws Exception {
+        Task task = new Task();
+        task.setTitle("Old Title");
+        task.setDescription("Old Description");
+        task.setCompleted(false);
+        task = taskRepository.save(task);
+
+        TaskRequestDTO updateRequest = new TaskRequestDTO();
+        updateRequest.setTitle("Updated Title");
+        updateRequest.setDescription("Updated Description");
+
+        mockMvc.perform(put("/api/tasks/{id}", task.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(task.getId()))
+                .andExpect(jsonPath("$.title").value("Updated Title"))
+                .andExpect(jsonPath("$.description").value("Updated Description"))
+                .andExpect(jsonPath("$.completed").value(false));
+    }
+
+
+    @Test
     void testDeleteTask() throws Exception {
         Task task = new Task();
         task.setTitle("Task 3");

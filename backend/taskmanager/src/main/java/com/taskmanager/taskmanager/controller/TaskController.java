@@ -52,6 +52,18 @@ public class TaskController {
     }
 
     /**
+     * Update a task (title, description, etc.).
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskResponseDTO> updateTask(
+            @PathVariable Long id,
+            @Valid @RequestBody TaskRequestDTO taskRequest) {
+        TaskResponseDTO updatedTask = taskService.updateTask(id, taskRequest);
+        return ResponseEntity.ok(updatedTask);
+    }
+
+
+    /**
      * Delete a task by ID.
      */
     @DeleteMapping("/{id}")

@@ -68,6 +68,29 @@ public class TaskService {
     }
 
     /**
+     * Update an existing task's information based on the provided request data.
+     *
+     * <p>This method retrieves the task by its ID, updates its fields such as
+     * title and description, and persists the changes to the database.</p>
+     *
+     * @param id the ID of the task to update
+     * @param taskRequest the new task details to apply
+     * @return the updated task as a {@link TaskResponseDTO}
+     * @throws ResourceNotFoundException if no task is found with the given ID
+     */
+
+    public TaskResponseDTO updateTask(Long id, TaskRequestDTO taskRequest) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+
+        task.setTitle(taskRequest.getTitle());
+        task.setDescription(taskRequest.getDescription());
+        Task updatedTask = taskRepository.save(task);
+        return mapToResponseDTO(updatedTask);
+    }
+
+
+    /**
      * Delete a task by its ID.
      *
      * @param id the ID of the task to delete

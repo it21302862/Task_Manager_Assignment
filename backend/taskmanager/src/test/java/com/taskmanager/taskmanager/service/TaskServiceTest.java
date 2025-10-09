@@ -91,6 +91,24 @@ public class TaskServiceTest {
     }
 
     @Test
+    void testUpdateTask() {
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+        when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        requestDTO.setTitle("Updated Task Title");
+        requestDTO.setDescription("Updated Task Description");
+
+        TaskResponseDTO response = taskService.updateTask(1L, requestDTO);
+
+        assertNotNull(response);
+        assertEquals("Updated Task Title", response.getTitle());
+        assertEquals("Updated Task Description", response.getDescription());
+        verify(taskRepository, times(1)).findById(1L);
+        verify(taskRepository, times(1)).save(any(Task.class));
+    }
+
+
+    @Test
     void testDeleteTask() {
         when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
         doNothing().when(taskRepository).delete(task);
