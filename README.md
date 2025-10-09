@@ -15,6 +15,22 @@ The Task Manager Application is a full-stack web application that allows users t
 
 ---
 
+---
+## UI
+
+**Light Mode**
+![Light Mode](https://github.com/it21302862/Task_Manager_Assignment/blob/main/frontend/taskmanager/public/Light_Mode.png)
+
+**Dark Mode**
+![Dark Mode](https://github.com/it21302862/Task_Manager_Assignment/blob/main/frontend/taskmanager/public/TodoList_Home.png)
+
+**Create Task Modal**
+![Create Task Modal](https://github.com/it21302862/Task_Manager_Assignment/blob/main/frontend/taskmanager/public/Create_Task.png)
+
+**Edit Task Modal**
+![Edit Task Modal](https://github.com/it21302862/Task_Manager_Assignment/blob/main/frontend/taskmanager/public/Update_Task.png)
+
+
 ## Technologies Used
 - **Frontend**:
   - React.js
